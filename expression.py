@@ -57,7 +57,7 @@ class Exp:
         :return: Statistic expression value for given data
         """
 
-        # Recursively evaluate expressions based on operator
+        # Recursively evaluate expressions based on operator and operands
         if self.operator == 'terminal':
             if self.key == 'drives':
                 return drives
@@ -85,11 +85,15 @@ class Exp:
         Finds all keys required by the expression
         :return: List of unique stat keys required by the expression
         """
+
+        # Base case for keys
         if self.operator == 'terminal':
             if self.key == "drives":
                 return ["fixed_drive"]
             if self.key == "plays":
                 return ["fixed_drive"]
             return [self.key, "fixed_drive"]
+
+        # Recursive case for operators
         else:
             return list(set(self.lhs.keys() + self.rhs.keys()))

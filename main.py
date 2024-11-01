@@ -10,9 +10,15 @@ def evaluate(plays, exps):
     :param exps: Statistic expressions to be evaluated
     :return: A dictionary of each expression name to its value
     """
+
+    # Count number of drives and plays represented in the given sample
     drives = len(set([play["fixed_drive"] for play in plays]))
     count = len(plays)
+
+    # Compile all required expression keys
     keys = set([key for exp in exps for key in exp.keys()])
+
+    # Sum required statistics over all plays
     totals = {
         key: sum([
             play[key] for play in plays if
@@ -20,6 +26,8 @@ def evaluate(plays, exps):
         ])
         for key in keys
     }
+
+    # Evaluate each expression
     return {exp.__str__(): exp.eval(totals, drives, count) for exp in exps}
 
 
@@ -31,14 +39,21 @@ def calculate_team(plays, exps, role):
     :param role: Role of the team, either offense "o" or defense "d"
     :return: A tuple containing general team stats and matchup stats
     """
+
+    # Determine
     comp = "defteam" if role == "o" else "posteam"
     opponents = set([play[comp] for play in plays])
-    stats = evaluate(plays, exps)
+
+    # Evaluate general team statistics over all plays
+    general = evaluate(plays, exps)
+
+    # Evaluate stats against each opponent
     opp_results = dict()
     for opp in opponents:
         relevant = evaluate([play for play in plays if play[comp] == opp], exps)
         opp_results[opp] = relevant
-    return stats, opp_results
+
+    return general, opp_results
 
 
 def stats(exps):
