@@ -38,10 +38,10 @@ for i in range(100):
     relu.append(train(network, training, validation, testing, 0.9e-3, 10, 15, 1e-3))
     # Sigmoid
     network = Net(input_length, [input_length], nn.Sigmoid())
-    sigmoid.append(train(network, training, validation, testing, 0.9e-3, 10, 15, 0))
+    sigmoid.append(train(network, training, validation, testing, 0.9e-3, 10, 15, 1e-3))
     # Linear
     network = Net(input_length, [], None)
-    linear.append(train(network, training, validation, testing, 0.7e-3, 10, 15, 1e-5))
+    linear.append(train(network, training, validation, testing, 0.7e-3, 10, 15, 1e-3))
     print(f"{i}%")
 
 # Print results
