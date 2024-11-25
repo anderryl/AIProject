@@ -126,16 +126,22 @@ plt.tight_layout()
 plt.suptitle("Accuracy Distributions by Activation Function", y=1.02)
 plt.show()
 
-# Rolling mean over iterations
-rolling_means = results.rolling(window=10).mean()
 
-plt.plot(rolling_means.index, rolling_means["ReLU"], label="ReLU", color="blue")
-plt.plot(rolling_means.index, rolling_means["Sigmoid"], label="Sigmoid", color="orange")
-plt.plot(rolling_means.index, rolling_means["Linear"], label="Linear", color="green")
+# Calculate the final mean accuracy for each model
+mean_accuracies = results.mean()
 
-plt.legend(title="Activation Functions")
-plt.title("Rolling Mean of Model Accuracy Over Iterations")
-plt.xlabel("Iteration (Batches)")
-plt.ylabel("Rolling Mean Accuracy (%)")
-plt.grid(True, linestyle="--", alpha=0.7)
+# Create the bar plot
+plt.figure(figsize=(8, 5))
+plt.bar(mean_accuracies.index, mean_accuracies, color=["blue", "orange", "green"], alpha=0.7)
+plt.title("Mean Accuracy Across Activation Functions")
+plt.xlabel("Activation Functions")
+plt.ylabel("Mean Accuracy (%)")
+plt.ylim(0, 100)  # Adjust Y-axis for clarity if needed
+plt.grid(axis="y", linestyle="--", alpha=0.7)
+
+# Display the values on top of each bar
+for i, value in enumerate(mean_accuracies):
+    plt.text(i, value + 0.5, f"{value:.2f}%", ha="center", va="bottom", fontsize=10)
+
 plt.show()
+
